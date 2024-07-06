@@ -1,9 +1,9 @@
 ---
 id: nature
-name: 自然风光
+name: 星河灿烂
 date: 2024-03-15
-description: 美丽的自然风光摄影集
-coverImage: /images/album1/1.jpg
+description: 星河灿烂，若出其里
+coverImage: /images/album1/1.png
 ---
 
 - /images/album1/1.png

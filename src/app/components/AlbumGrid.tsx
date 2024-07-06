@@ -1,5 +1,3 @@
-'use client'
-
 import { Album } from '@/types/album'
 import AlbumCard from './AlbumCard'
 

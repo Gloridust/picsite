@@ -1,8 +1,6 @@
-'use client'
-
-import { Album } from '@/types/album'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Album } from '@/types/album'
 
 interface AlbumCardProps {
   album: Album
@@ -10,20 +8,20 @@ interface AlbumCardProps {
 
 const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
   return (
-    <Link href={`/album/${album.id}`} className="block">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+    <Link href={`/album/${album.id}`}>
+      <div className="border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
         <div className="relative h-48">
           <Image
             src={album.coverImage}
             alt={album.name}
-            fill
-            style={{ objectFit: 'cover' }}
+            layout="fill"
+            objectFit="cover"
           />
         </div>
         <div className="p-4">
-          <h3 className="text-lg font-semibold mb-1">{album.name}</h3>
-          <p className="text-sm text-gray-600 mb-2">{album.date}</p>
-          <p className="text-sm text-gray-700 line-clamp-2">{album.description}</p>
+          <h3 className="font-bold text-lg mb-2">{album.name}</h3>
+          <p className="text-gray-600 text-sm mb-2">{album.date}</p>
+          <p className="text-gray-700 text-sm">{album.description}</p>
         </div>
       </div>
     </Link>

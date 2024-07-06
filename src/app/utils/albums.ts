@@ -13,10 +13,15 @@ export function getAllAlbums(): Album[] {
     const fileContents = fs.readFileSync(fullPath, 'utf8')
     const matterResult = matter(fileContents)
 
+    // 确保日期是字符串格式
+    const date = matterResult.data.date
+      ? new Date(matterResult.data.date).toISOString().split('T')[0]
+      : ''
+
     return {
       id,
       name: matterResult.data.name || '',
-      date: matterResult.data.date || '',
+      date, // 使用处理后的日期
       description: matterResult.data.description || '',
       coverImage: matterResult.data.coverImage || '',
       images: matterResult.content.split('\n').filter(Boolean).map(line => line.trim().replace('- ', '')),
