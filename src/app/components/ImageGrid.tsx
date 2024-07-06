@@ -1,5 +1,3 @@
-'use client'
-
 import Image from 'next/image'
 
 interface ImageGridProps {
@@ -15,8 +13,8 @@ const ImageGrid: React.FC<ImageGridProps> = ({ images }) => {
             src={image}
             alt={`Image ${index + 1}`}
             fill
-            style={{ objectFit: 'cover' }}
-            className="rounded-lg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover rounded-lg"
           />
         </div>
       ))}
