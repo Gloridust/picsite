@@ -15,7 +15,10 @@ export function getAllAlbums(): Album[] {
 
     return {
       id,
-      ...(matterResult.data as Omit<Album, 'id' | 'images'>),
+      name: matterResult.data.name || '',
+      date: matterResult.data.date || '',
+      description: matterResult.data.description || '',
+      coverImage: matterResult.data.coverImage || '',
       images: matterResult.content.split('\n').filter(Boolean).map(line => line.trim().replace('- ', '')),
     }
   })
