@@ -7,10 +7,17 @@ import { Album } from '@/types/album'
 export default function SearchBar({ albums }: { albums: Album[] }) {
   const [searchTerm, setSearchTerm] = useState('')
 
-  const filteredAlbums = albums.filter(album =>
-    album.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    album.description.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredAlbums = albums.filter(album => {
+    if (!album || typeof album !== 'object') return false;
+    
+    const name = album.name ?? '';
+    const description = album.description ?? '';
+
+    return (
+      name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
     <>
