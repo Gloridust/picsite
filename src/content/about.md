@@ -15,3 +15,5 @@ PicSite 是一个简单而强大的在线图片展示网站。
 3. 点击相册查看详细内容
 
 感谢您使用 PicSite！
+
+![show-logo.webp](/images/about/show-logo.webp)
