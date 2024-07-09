@@ -1,5 +1,7 @@
-import { Album } from '@/types/album'
-import AlbumCard from './AlbumCard'
+'use client';
+
+import { Album } from '@/types/album';
+import AlbumCard from './AlbumCard';
 
 interface AlbumGridProps {
   albums: Album[]

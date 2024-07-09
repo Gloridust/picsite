@@ -45,8 +45,8 @@ export function getAllAlbums(): Album[] {
 }
 
 export function getAlbumById(id: string): Album | undefined {
-  const albums = getAllAlbums()
-  return albums.find(album => album.id === id)
+  const albums = getAllAlbums();
+  return albums.find(album => album.id === id);
 }
 
 export function searchAlbums(query: string): Album[] {

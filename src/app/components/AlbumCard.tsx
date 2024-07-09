@@ -1,9 +1,13 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { Album } from '@/types/album'
+'use client';
+
+import Link from 'next/link';
+import { Album } from '@/types/album';
+import ProgressiveImage from './ProgressiveImage';
+
+// ... 其余代码保持不变
 
 interface AlbumCardProps {
-  album: Album
+  album: Album;
 }
 
 const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
@@ -11,11 +15,10 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
     <Link href={`/album/${album.id}`}>
       <div className="border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
         <div className="relative h-48">
-          <Image
+          <ProgressiveImage
             src={album.coverImage}
             alt={album.name}
-            layout="fill"
-            objectFit="cover"
+            className="w-full h-full"
           />
         </div>
         <div className="p-4">
@@ -25,7 +28,7 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
 
-export default AlbumCard
+export default AlbumCard;

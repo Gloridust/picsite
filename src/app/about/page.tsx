@@ -8,7 +8,7 @@ export default function About() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <article className="prose prose-sm sm:prose sm:prose mx-auto">
+      <article className="prose prose-sm sm:prose sm:prose mx-auto prose-img:mx-auto">
         <ReactMarkdown>{aboutContent}</ReactMarkdown>
       </article>
     </div>
