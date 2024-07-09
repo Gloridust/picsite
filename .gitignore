@@ -6,6 +6,7 @@ node_modules
 .venv
 config.py
 __pycache__/
+local_repo/
 
 # dependencies
 /node_modules
