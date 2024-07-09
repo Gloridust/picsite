@@ -3,6 +3,9 @@ const nextConfig = {
     images: {
         domains: ['localhost'],
     },
+    experimental: {
+        appDir: true,
+      },
 };
 
 export default nextConfig;

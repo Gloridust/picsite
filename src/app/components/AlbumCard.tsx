@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Album } from '@/types/album'
+import { shimmer, toBase64 } from '@/utils/imageUtils'
 
 interface AlbumCardProps {
   album: Album
@@ -14,8 +15,11 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
           <Image
             src={album.coverImage}
             alt={album.name}
-            layout="fill"
-            objectFit="cover"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           />
         </div>
         <div className="p-4">
