@@ -36,23 +36,3 @@ body {
     text-wrap: balance;
   }
 }
-
-.prose img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (min-width: 640px) {
-  .prose img {
-    max-width: 75%;
-  }
-}
-
-@media (min-width: 1024px) {
-  .prose img {
-    max-width: 50%;
-  }
-}
