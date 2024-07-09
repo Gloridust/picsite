@@ -4,6 +4,7 @@
 .next
 node_modules
 .venv
+config.py
 
 # dependencies
 /node_modules
