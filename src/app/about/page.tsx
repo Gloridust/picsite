@@ -8,9 +8,9 @@ export default function About() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="prose max-w-none">
+      <article className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto">
         <ReactMarkdown>{aboutContent}</ReactMarkdown>
-      </div>
+      </article>
     </div>
   )
 }
