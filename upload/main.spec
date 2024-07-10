@@ -7,10 +7,12 @@ a = Analysis(
     pathex=['.'],
     binaries=[],
     datas=[
-        ('src/logo-r.png', 'src/logo-r.png'),  # 确保图标文件被包含
+        ('src/logo-r.webp', 'src/logo-r.webp'),  # 确保图标文件被包含
     ],
     hiddenimports=[
         'PyQt5.sip',
+        'qtawesome',
+        'qdarkstyle',
     ],
     hookspath=[],
     hooksconfig={},
@@ -39,7 +41,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='src/logo-r.png',  # 设置图标文件
+    icon='src/logo-r.webp',  # 设置图标文件
 )
 
 coll = COLLECT(
