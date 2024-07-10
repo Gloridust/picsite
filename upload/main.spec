@@ -52,3 +52,10 @@ coll = COLLECT(
     upx_exclude=[],
     name='main'
 )
+
+app = BUNDLE(
+    coll,
+    name='main',
+    icon='src/logo-r.webp',
+    onefile=True,
+)
