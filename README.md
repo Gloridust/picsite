@@ -5,7 +5,7 @@
     <img width="180" src="public\images\about\logo-rc.png">
   </a>
 </p>
-<h2 align="center">ShareScreenNearby</h2>
+<h2 align="center">PicSite</h2>
 <!-- <div align="center"><p><a href="./README.md">简体中文</a>|<a href="./README_EN.md">English(US)</a></p></div> -->
 
 PicSite 是一个使用 Next.js 构建的在线图片展示网站。它允许用户浏览相册、查看图片，并提供了简单的搜索功能。
