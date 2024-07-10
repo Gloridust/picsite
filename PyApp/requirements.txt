@@ -1,0 +1,6 @@
+PyQt5==5.15.10
+qtawesome==1.3.1
+qdarkstyle==3.0.2
+GitPython==3.1.32
+pyyaml==6.0
+markdown==3.4.4
