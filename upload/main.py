@@ -4,8 +4,9 @@ import git
 import shutil
 import markdown
 import yaml
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, QFileDialog, QLineEdit, QFormLayout, QDialog, QScrollArea
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, QFileDialog, QLineEdit, QFormLayout, QDialog, QScrollArea, QHBoxLayout
+from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtCore import Qt
 from config import GIT_REPO_URL, GIT_LOCAL_PATH, ALBUMS_PATH, IMAGES_PATH, GIT_USER, GIT_TOKEN
 
 class GitHandler:
@@ -37,14 +38,23 @@ class AlbumApp(QWidget):
 
     def initUI(self):
         self.setWindowTitle('Album Viewer')
+        self.setGeometry(100, 100, 800, 600)
         self.layout = QVBoxLayout()
+
+        self.title_label = QLabel('我的相册')
+        self.title_label.setFont(QFont('Arial', 20))
+        self.title_label.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(self.title_label)
+
         self.grid_layout = QGridLayout()
+        self.grid_layout.setSpacing(20)
+        self.layout.addLayout(self.grid_layout)
 
         self.new_album_button = QPushButton('新建相册')
+        self.new_album_button.setStyleSheet("background-color: #4CAF50; color: white; padding: 10px; font-size: 16px;")
         self.new_album_button.clicked.connect(self.create_new_album)
+        self.layout.addWidget(self.new_album_button, alignment=Qt.AlignCenter)
 
-        self.layout.addLayout(self.grid_layout)
-        self.layout.addWidget(self.new_album_button)
         self.setLayout(self.layout)
 
     def load_albums(self):
@@ -65,10 +75,13 @@ class AlbumApp(QWidget):
             cover_image_path = os.path.join(GIT_LOCAL_PATH, 'public', album['coverImage'][1:])
             pixmap = QPixmap(cover_image_path)
             label = QLabel()
-            label.setPixmap(pixmap.scaled(100, 100))
+            label.setPixmap(pixmap.scaled(200, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation))
             label.mousePressEvent = lambda event, a=album: self.open_album(a)
             self.grid_layout.addWidget(label, i // 3, (i % 3) * 2)
+
             album_info = QLabel(f"{album['name']}\n{album['date']}")
+            album_info.setFont(QFont('Arial', 14))
+            album_info.setAlignment(Qt.AlignCenter)
             self.grid_layout.addWidget(album_info, i // 3, (i % 3) * 2 + 1)
 
     def open_album(self, album):
@@ -78,6 +91,7 @@ class AlbumApp(QWidget):
     def create_new_album(self):
         dialog = QDialog(self)
         dialog.setWindowTitle('新建相册')
+        dialog.setGeometry(200, 200, 400, 300)
         dialog_layout = QVBoxLayout()
 
         form_layout = QFormLayout()
@@ -92,12 +106,14 @@ class AlbumApp(QWidget):
         dialog_layout.addLayout(form_layout)
 
         self.image_button = QPushButton('选择封面图片')
+        self.image_button.setStyleSheet("background-color: #2196F3; color: white; padding: 5px; font-size: 14px;")
         self.image_button.clicked.connect(self.select_cover_image)
         dialog_layout.addWidget(self.image_button)
 
         save_button = QPushButton('保存')
+        save_button.setStyleSheet("background-color: #4CAF50; color: white; padding: 10px; font-size: 16px;")
         save_button.clicked.connect(self.save_album)
-        dialog_layout.addWidget(save_button)
+        dialog_layout.addWidget(save_button, alignment=Qt.AlignCenter)
 
         dialog.setLayout(dialog_layout)
         dialog.exec_()
@@ -147,16 +163,19 @@ class AlbumView(QWidget):
 
     def initUI(self):
         self.setWindowTitle(self.album['name'])
+        self.setGeometry(100, 100, 800, 600)
         self.layout = QVBoxLayout()
         self.grid_layout = QGridLayout()
-        
+        self.grid_layout.setSpacing(20)
+
         self.load_images()
 
         self.add_image_button = QPushButton('添加照片')
+        self.add_image_button.setStyleSheet("background-color: #4CAF50; color: white; padding: 10px; font-size: 16px;")
         self.add_image_button.clicked.connect(self.add_image)
 
         self.layout.addLayout(self.grid_layout)
-        self.layout.addWidget(self.add_image_button)
+        self.layout.addWidget(self.add_image_button, alignment=Qt.AlignCenter)
         self.setLayout(self.layout)
 
     def load_images(self):
@@ -169,8 +188,8 @@ class AlbumView(QWidget):
             image_full_path = os.path.join(GIT_LOCAL_PATH, 'public', image_path[1:])
             pixmap = QPixmap(image_full_path)
             label = QLabel()
-            label.setPixmap(pixmap.scaled(100, 100))
-            self.grid_layout.addWidget(label, i // 3, (i % 3))
+            label.setPixmap(pixmap.scaled(200, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            self.grid_layout.addWidget(label, i // 3, i % 3)
 
     def add_image(self):
         options = QFileDialog.Options()
