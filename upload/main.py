@@ -4,10 +4,24 @@ import git
 import shutil
 import markdown
 import yaml
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, QFileDialog, QLineEdit, QFormLayout, QDialog, QScrollArea, QHBoxLayout
+from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QPushButton, QLabel,
+                             QGridLayout, QFileDialog, QLineEdit, QFormLayout, QDialog, 
+                             QScrollArea, QProgressBar)
 from PyQt5.QtGui import QPixmap, QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from config import GIT_REPO_URL, GIT_LOCAL_PATH, ALBUMS_PATH, IMAGES_PATH, GIT_USER, GIT_TOKEN
+
+
+class GitCloneThread(QThread):
+    progress = pyqtSignal(int)
+
+    def __init__(self, git_handler):
+        super().__init__()
+        self.git_handler = git_handler
+
+    def run(self):
+        self.git_handler.clone_repo(self.progress)
+
 
 class GitHandler:
     def __init__(self):
@@ -17,10 +31,10 @@ class GitHandler:
         os.chmod(path, 0o777)
         func(path)
 
-    def clone_repo(self):
+    def clone_repo(self, progress_callback):
         if os.path.exists(GIT_LOCAL_PATH):
             shutil.rmtree(GIT_LOCAL_PATH, onerror=self.remove_readonly)
-        self.repo = git.Repo.clone_from(GIT_REPO_URL, GIT_LOCAL_PATH)
+        self.repo = git.Repo.clone_from(GIT_REPO_URL, GIT_LOCAL_PATH, progress=progress_callback)
 
     def commit_and_push(self, message):
         self.repo.git.add(A=True)
@@ -28,13 +42,17 @@ class GitHandler:
         origin = self.repo.remote(name='origin')
         origin.push()
 
+
 class AlbumApp(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
         self.git_handler = GitHandler()
-        self.git_handler.clone_repo()
-        self.load_albums()
+        self.init_progress_bar()
+        self.clone_thread = GitCloneThread(self.git_handler)
+        self.clone_thread.progress.connect(self.update_progress)
+        self.clone_thread.finished.connect(self.on_clone_finished)
+        self.clone_thread.start()
 
     def initUI(self):
         self.setWindowTitle('Album Viewer')
@@ -56,6 +74,19 @@ class AlbumApp(QWidget):
         self.layout.addWidget(self.new_album_button, alignment=Qt.AlignCenter)
 
         self.setLayout(self.layout)
+
+    def init_progress_bar(self):
+        self.progress_bar = QProgressBar(self)
+        self.progress_bar.setGeometry(200, 80, 400, 30)
+        self.progress_bar.setMaximum(100)
+        self.layout.addWidget(self.progress_bar, alignment=Qt.AlignCenter)
+
+    def update_progress(self, progress):
+        self.progress_bar.setValue(progress)
+
+    def on_clone_finished(self):
+        self.progress_bar.deleteLater()
+        self.load_albums()
 
     def load_albums(self):
         self.albums = []
@@ -154,6 +185,7 @@ class AlbumApp(QWidget):
         self.git_handler.commit_and_push('新增相册')
         self.load_albums()
 
+
 class AlbumView(QWidget):
     def __init__(self, album, git_handler):
         super().__init__()
@@ -182,7 +214,7 @@ class AlbumView(QWidget):
         md_content = ""
         with open(self.album['path'], 'r', encoding='utf-8') as file:
             md_content = file.read()
-        
+
         image_paths = md_content.split('---')[2].strip().split('\n')
         for i, image_path in enumerate(image_paths):
             image_full_path = os.path.join(GIT_LOCAL_PATH, 'public', image_path[1:])
@@ -205,6 +237,7 @@ class AlbumView(QWidget):
 
             self.git_handler.commit_and_push('添加照片')
             self.load_images()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
