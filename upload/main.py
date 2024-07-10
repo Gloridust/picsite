@@ -4,9 +4,11 @@ import git
 import shutil
 import markdown
 import yaml
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, QFileDialog, QLineEdit, QFormLayout, QDialog, QProgressDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, QFileDialog, QLineEdit, QFormLayout, QDialog, QProgressDialog, QMainWindow
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
+import qtawesome as qta
+import qdarkstyle
 from config import GIT_REPO_URL, GIT_LOCAL_PATH, ALBUMS_PATH, IMAGES_PATH, GIT_USER, GIT_TOKEN
 
 class GitHandler(QThread):
@@ -32,7 +34,7 @@ class GitHandler(QThread):
         self.progress.emit(100)
         self.finished.emit()
 
-class AlbumApp(QWidget):
+class AlbumApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -61,7 +63,9 @@ class AlbumApp(QWidget):
     def initUI(self):
         self.setWindowTitle('Album Viewer')
         self.setGeometry(100, 100, 800, 600)
-        self.layout = QVBoxLayout()
+        self.main_widget = QWidget()
+        self.setCentralWidget(self.main_widget)
+        self.layout = QVBoxLayout(self.main_widget)
 
         self.title_label = QLabel('我的相册')
         self.title_label.setFont(QFont('Arial', 20))
@@ -73,11 +77,10 @@ class AlbumApp(QWidget):
         self.layout.addLayout(self.grid_layout)
 
         self.new_album_button = QPushButton('新建相册')
-        self.new_album_button.setStyleSheet("background-color: #4CAF50; color: white; padding: 10px; font-size: 16px;")
+        self.new_album_button.setStyleSheet("padding: 10px; font-size: 16px;")
+        self.new_album_button.setIcon(qta.icon('fa.plus'))
         self.new_album_button.clicked.connect(self.create_new_album)
         self.layout.addWidget(self.new_album_button, alignment=Qt.AlignCenter)
-
-        self.setLayout(self.layout)
 
     def load_albums(self):
         self.albums = []
@@ -128,12 +131,14 @@ class AlbumApp(QWidget):
         dialog_layout.addLayout(form_layout)
 
         self.image_button = QPushButton('选择封面图片')
-        self.image_button.setStyleSheet("background-color: #2196F3; color: white; padding: 5px; font-size: 14px;")
+        self.image_button.setStyleSheet("padding: 5px; font-size: 14px;")
+        self.image_button.setIcon(qta.icon('fa.image'))
         self.image_button.clicked.connect(self.select_cover_image)
         dialog_layout.addWidget(self.image_button)
 
         save_button = QPushButton('保存')
-        save_button.setStyleSheet("background-color: #4CAF50; color: white; padding: 10px; font-size: 16px;")
+        save_button.setStyleSheet("padding: 10px; font-size: 16px;")
+        save_button.setIcon(qta.icon('fa.save'))
         save_button.clicked.connect(self.save_album)
         dialog_layout.addWidget(save_button, alignment=Qt.AlignCenter)
 
@@ -193,7 +198,8 @@ class AlbumView(QWidget):
         self.load_images()
 
         self.add_image_button = QPushButton('添加照片')
-        self.add_image_button.setStyleSheet("background-color: #4CAF50; color: white; padding: 10px; font-size: 16px;")
+        self.add_image_button.setStyleSheet("padding: 10px; font-size: 16px;")
+        self.add_image_button.setIcon(qta.icon('fa.plus'))
         self.add_image_button.clicked.connect(self.add_image)
 
         self.layout.addLayout(self.grid_layout)
@@ -230,6 +236,7 @@ class AlbumView(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())  # 使用 qdarkstyle 主题
     ex = AlbumApp()
     ex.show()
     sys.exit(app.exec_())
