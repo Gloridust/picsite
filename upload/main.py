@@ -4,7 +4,7 @@ import git
 import shutil
 import markdown
 import yaml
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, QFileDialog, QLineEdit, QFormLayout, QDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, QFileDialog, QLineEdit, QFormLayout, QDialog, QScrollArea
 from PyQt5.QtGui import QPixmap
 from config import GIT_REPO_URL, GIT_LOCAL_PATH, ALBUMS_PATH, IMAGES_PATH, GIT_USER, GIT_TOKEN
 
@@ -66,9 +66,14 @@ class AlbumApp(QWidget):
             pixmap = QPixmap(cover_image_path)
             label = QLabel()
             label.setPixmap(pixmap.scaled(100, 100))
+            label.mousePressEvent = lambda event, a=album: self.open_album(a)
             self.grid_layout.addWidget(label, i // 3, (i % 3) * 2)
             album_info = QLabel(f"{album['name']}\n{album['date']}")
             self.grid_layout.addWidget(album_info, i // 3, (i % 3) * 2 + 1)
+
+    def open_album(self, album):
+        self.album_view = AlbumView(album, self.git_handler)
+        self.album_view.show()
 
     def create_new_album(self):
         dialog = QDialog(self)
@@ -132,6 +137,55 @@ class AlbumApp(QWidget):
 
         self.git_handler.commit_and_push('新增相册')
         self.load_albums()
+
+class AlbumView(QWidget):
+    def __init__(self, album, git_handler):
+        super().__init__()
+        self.album = album
+        self.git_handler = git_handler
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.album['name'])
+        self.layout = QVBoxLayout()
+        self.grid_layout = QGridLayout()
+        
+        self.load_images()
+
+        self.add_image_button = QPushButton('添加照片')
+        self.add_image_button.clicked.connect(self.add_image)
+
+        self.layout.addLayout(self.grid_layout)
+        self.layout.addWidget(self.add_image_button)
+        self.setLayout(self.layout)
+
+    def load_images(self):
+        md_content = ""
+        with open(self.album['path'], 'r', encoding='utf-8') as file:
+            md_content = file.read()
+        
+        image_paths = md_content.split('---')[2].strip().split('\n')
+        for i, image_path in enumerate(image_paths):
+            image_full_path = os.path.join(GIT_LOCAL_PATH, 'public', image_path[1:])
+            pixmap = QPixmap(image_full_path)
+            label = QLabel()
+            label.setPixmap(pixmap.scaled(100, 100))
+            self.grid_layout.addWidget(label, i // 3, (i % 3))
+
+    def add_image(self):
+        options = QFileDialog.Options()
+        file_path, _ = QFileDialog.getOpenFileName(self, "选择照片", "", "Images (*.png *.jpg *.jpeg *.webp)", options=options)
+        if file_path:
+            image_name = os.path.basename(file_path)
+            album_folder = os.path.join(IMAGES_PATH, self.album['id'])
+            image_dest = os.path.join(album_folder, image_name)
+            shutil.copy(file_path, image_dest)
+
+            with open(self.album['path'], 'a', encoding='utf-8') as file:
+                file.write(f"- /images/{self.album['id']}/{image_name}\n")
+
+            self.git_handler.commit_and_push('添加照片')
+            self.load_images()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
