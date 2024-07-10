@@ -7,6 +7,8 @@ node_modules
 config.py
 __pycache__/
 local_repo/
+build/
+dist/
 
 # dependencies
 /node_modules
