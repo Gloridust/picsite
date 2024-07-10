@@ -1,21 +1,84 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PicSite
 
-## Getting Started
+PicSite 是一个使用 Next.js 构建的在线图片展示网站。它允许用户浏览相册、查看图片，并提供了简单的搜索功能。
 
-First, run the development server:
+## 功能特点
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 相册展示：以网格形式展示多个相册
+- 图片浏览：点击相册查看其中的所有图片
+- 搜索功能：根据相册名称或描述搜索相册
+- 响应式设计：适配桌面和移动设备
+- 图片加载效果：使用优雅的加载动画提升用户体验
+- 原图查看：点击图片可在新标签页中查看原图
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 技术栈
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Next.js 13+
+- React
+- TypeScript
+- Tailwind CSS
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 部署流程
+
+1. 克隆仓库：
+   ```
+   git clone https://github.com/Gloridust/picsite.git
+   cd picsite
+   ```
+
+2. 安装依赖：
+   ```
+   npm install
+   ```
+
+2. 本地调试：
+   ```
+   npm run dev
+   ```
+
+3. 构建项目：
+   ```
+   npm run build
+   ```
+
+4. 启动生产服务器：
+   ```
+   npm start
+   ```
+
+   现在，您可以通过 `http://localhost:3000` 访问您的网站。
+
+5. 部署到托管平台：
+   - 您可以使用 Vercel（Next.js 的创建者开发的平台）进行一键部署。
+   - 其他选项包括 Netlify、AWS、或任何支持 Node.js 的托管服务。
+
+## 如何添加相册和描述
+
+1. 在 `src/content/albums/` 目录下创建一个新的 Markdown 文件，例如 `nature.md`。
+
+2. 在文件的顶部添加 frontmatter，包括相册的元数据：
+
+   ```markdown
+   ---
+   id: nature
+   name: 自然风光
+   date: 2024-03-15
+   description: 美丽的自然风光摄影集
+   coverImage: images/nature/cover.jpg
+   ---
+   - images/nature/1.jpg
+   - images/nature/2.jpg
+   - images/nature/3.jpg
+   ```
+
+3. 在 `public/images/` 目录下创建对应的文件夹（例如 `nature`），并将图片文件放入其中。
+
+4. 确保 `coverImage` 路径和图片列表中的路径与实际文件位置相匹配。
+
+## 贡献
+
+欢迎提交 Pull Requests 来改进这个项目。对于重大更改，请先开一个 issue 讨论您想要改变的内容。
+
+## 许可证
+
+[MIT](https://choosealicense.com/licenses/mit/)
