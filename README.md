@@ -1,5 +1,13 @@
 # PicSite
 
+<p align="center">
+  <a href="#">
+    <img width="180" src="public\images\about\logo-rc.png">
+  </a>
+</p>
+<h2 align="center">ShareScreenNearby</h2>
+<!-- <div align="center"><p><a href="./README.md">简体中文</a>|<a href="./README_EN.md">English(US)</a></p></div> -->
+
 PicSite 是一个使用 Next.js 构建的在线图片展示网站。它允许用户浏览相册、查看图片，并提供了简单的搜索功能。
 
 ## 功能特点
@@ -31,26 +39,25 @@ PicSite 是一个使用 Next.js 构建的在线图片展示网站。它允许用
    npm install
    ```
 
-2. 本地调试：
+3. 本地调试：
    ```
    npm run dev
    ```
 
-3. 构建项目：
+4. 构建项目：
    ```
    npm run build
    ```
 
-4. 启动生产服务器：
+5. 启动生产服务器：
    ```
    npm start
    ```
 
    现在，您可以通过 `http://localhost:3000` 访问您的网站。
 
-5. 部署到托管平台：
-   - 您可以使用 Vercel（Next.js 的创建者开发的平台）进行一键部署。
-   - 其他选项包括 Netlify、AWS、或任何支持 Node.js 的托管服务。
+6. 部署到托管平台：
+    您可以使用 Vercel 进行一键部署（推荐）。
 
 ## 如何添加相册和描述
 
