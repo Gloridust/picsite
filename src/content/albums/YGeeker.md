@@ -1,7 +1,7 @@
 ---
-coverImage: /images/tset/a44747bafe638f4627e8f5676f0eebc.jpg
+coverImage: /images/YGeeker/a44747bafe638f4627e8f5676f0eebc.jpg
 date: '2024-07-11'
-description: "\u6D4B\u8BD5\u56FE\u96C6"
+description: "YGeeker图鉴"
 id: YGeeker
 name: "YGeeker"
 ---
