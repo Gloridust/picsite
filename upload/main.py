@@ -12,9 +12,13 @@ class GitHandler:
     def __init__(self):
         self.repo = None
 
+    def remove_readonly(self, func, path, excinfo):
+        os.chmod(path, 0o777)
+        func(path)
+
     def clone_repo(self):
         if os.path.exists(GIT_LOCAL_PATH):
-            shutil.rmtree(GIT_LOCAL_PATH)
+            shutil.rmtree(GIT_LOCAL_PATH, onerror=self.remove_readonly)
         self.repo = git.Repo.clone_from(GIT_REPO_URL, GIT_LOCAL_PATH)
 
     def commit_and_push(self, message):
