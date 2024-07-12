@@ -6,3 +6,4 @@ id: test
 name: test
 ---
 - /images/test/clipmemo.png
+- /images/test/江安竹簧logo.png
