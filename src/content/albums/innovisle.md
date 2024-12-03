@@ -6,6 +6,3 @@ id: innovisle
 name: innovisle
 ---
 - /images/innovisle/innovisle.jpeg
-- /images/innovisle/Screenshot 2024-11-02 at 02.39.51.png
-- /images/innovisle/Screenshot 2024-11-02 at 02.39.51.png
-- /images/innovisle/Screenshot 2024-11-02 at 02.39.51.png
